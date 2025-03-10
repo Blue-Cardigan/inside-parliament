@@ -89,16 +89,29 @@ function getMPColor(party) {
  * @returns {Promise<Array>} Promise resolving to array of MP objects
  */
 export function loadMPs() {
-  return fetch('/src/data/mps.json') // Update path to match your project structure
+  // Get the base URL for the current environment
+  const baseUrl = import.meta.env?.BASE_URL || '/';
+  
+  // Construct the full path to mps.json
+  const dataPath = new URL('data/mps.json', baseUrl).pathname;
+  
+  return fetch(dataPath)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to load MP data');
+        // Try fallback path if first attempt fails
+        const fallbackPath = '/data/mps.json';
+        return fetch(fallbackPath).then(fallbackResponse => {
+          if (!fallbackResponse.ok) {
+            throw new Error('Failed to load MP data');
+          }
+          return fallbackResponse.json();
+        });
       }
       return response.json();
     })
     .then(mpData => {
       const mps = createMPMeshes(mpData);
-      updateMPPositions(mps); // Position MPs immediately after creation
+      updateMPPositions(mps);
       return mps;
     })
     .catch(error => {

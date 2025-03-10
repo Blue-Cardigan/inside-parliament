@@ -10,13 +10,15 @@ export default defineConfig({
     assetsDir: 'assets',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html')
-      }
-    }
+        main: 'index.html'
+      },
+    },
+    assetsInclude: ['**/*.json'],
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
     }
-  }
+  },
+  publicDir: 'public',
 }); 
