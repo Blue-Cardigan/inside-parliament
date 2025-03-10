@@ -51,10 +51,6 @@ export function createHouseOfCommons(scene) {
     const tableObjects = createCentralTable(scene);
     collidableObjects.push(...tableObjects);
     
-    // Create the Dispatch Boxes
-    const dispatchBoxObjects = createDispatchBoxes(scene);
-    collidableObjects.push(...dispatchBoxObjects);
-    
     // Create the Mace
     createMace(scene);
     
@@ -564,8 +560,11 @@ function createSpeakersChair(scene) {
 /**
  * Creates the central table
  * @param {THREE.Scene} scene - The Three.js scene
+ * @returns {Array} Array of collidable table objects
  */
 function createCentralTable(scene) {
+  const collidableObjects = [];
+
   // Table top
   const tableGeometry = new THREE.BoxGeometry(4, 0.2, 8);
   const tableMaterial = new THREE.MeshStandardMaterial({
@@ -577,7 +576,9 @@ function createCentralTable(scene) {
   table.position.set(0, 0.6, -5);
   table.castShadow = true;
   table.receiveShadow = true;
+  table.userData.collidable = true;
   scene.add(table);
+  collidableObjects.push(table);
   
   // Table legs
   const legGeometry = new THREE.BoxGeometry(0.2, 0.6, 0.2);
@@ -597,11 +598,15 @@ function createCentralTable(scene) {
     leg.position.set(pos[0], 0.3, pos[1]);
     leg.castShadow = true;
     leg.receiveShadow = true;
+    leg.userData.collidable = true;
     scene.add(leg);
+    collidableObjects.push(leg);
   });
   
   // Add books and papers on the table
   addTableItems(scene);
+  
+  return collidableObjects;
 }
 
 /**
@@ -655,53 +660,7 @@ function addTableItems(scene) {
     scene.add(paper);
   });
 }
-
-/**
- * Creates the dispatch boxes
- * @param {THREE.Scene} scene - The Three.js scene
- */
-function createDispatchBoxes(scene) {
-  const boxGeometry = new THREE.BoxGeometry(1.5, 0.8, 1);
-  const boxMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8B0000, // Dark red
-    roughness: 0.7,
-    metalness: 0.3
-  });
-  
-  // Government dispatch box
-  const govBox = new THREE.Mesh(boxGeometry, boxMaterial);
-  govBox.position.set(1, 1, -1);
-  govBox.castShadow = true;
-  govBox.receiveShadow = true;
-  scene.add(govBox);
-  
-  // Opposition dispatch box
-  const oppBox = new THREE.Mesh(boxGeometry, boxMaterial);
-  oppBox.position.set(-1, 1, -1);
-  oppBox.castShadow = true;
-  oppBox.receiveShadow = true;
-  scene.add(oppBox);
-  
-  // Add Bibles on top of the dispatch boxes
-  const bibleGeometry = new THREE.BoxGeometry(0.5, 0.1, 0.7);
-  const bibleMaterial = new THREE.MeshStandardMaterial({
-    color: 0x000080, // Navy blue
-    roughness: 0.7,
-    metalness: 0.2
-  });
-  
-  // Government Bible
-  const govBible = new THREE.Mesh(bibleGeometry, bibleMaterial);
-  govBible.position.set(1, 1.45, -1);
-  govBible.castShadow = true;
-  scene.add(govBible);
-  
-  // Opposition Bible
-  const oppBible = new THREE.Mesh(bibleGeometry, bibleMaterial);
-  oppBible.position.set(-1, 1.45, -1);
-  oppBible.castShadow = true;
-  scene.add(oppBible);
-}
+// 
 
 /**
  * Creates the Mace
@@ -752,8 +711,11 @@ function createMace(scene) {
 /**
  * Creates the Clerks' table
  * @param {THREE.Scene} scene - The Three.js scene
+ * @returns {Array} Array of collidable clerks' table objects
  */
 function createClerksTable(scene) {
+  const collidableObjects = [];
+
   // Table top
   const tableGeometry = new THREE.BoxGeometry(5, 0.1, 2);
   const tableMaterial = new THREE.MeshStandardMaterial({
@@ -765,7 +727,9 @@ function createClerksTable(scene) {
   table.position.set(0, 0.7, -8);
   table.castShadow = true;
   table.receiveShadow = true;
+  table.userData.collidable = true;
   scene.add(table);
+  collidableObjects.push(table);
   
   // Table legs
   const legGeometry = new THREE.BoxGeometry(0.1, 0.7, 0.1);
@@ -785,31 +749,12 @@ function createClerksTable(scene) {
     leg.position.set(pos[0], 0.35, pos[1]);
     leg.castShadow = true;
     leg.receiveShadow = true;
+    leg.userData.collidable = true;
     scene.add(leg);
+    collidableObjects.push(leg);
   });
   
-  // Add items to the clerks' table
-  const itemGeometry = new THREE.BoxGeometry(0.8, 0.2, 0.5);
-  const itemMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8B4513, // Dark wood
-    roughness: 0.7,
-    metalness: 0.3
-  });
-  
-  // Add various items
-  const itemPositions = [
-    { pos: [-1.5, 0.85, -8.2], rot: [0, 0.2, 0] },
-    { pos: [0, 0.85, -8], rot: [0, 0, 0] },
-    { pos: [1.5, 0.85, -7.8], rot: [0, -0.1, 0] }
-  ];
-  
-  itemPositions.forEach(pos => {
-    const item = new THREE.Mesh(itemGeometry, itemMaterial);
-    item.position.set(pos.pos[0], pos.pos[1], pos.pos[2]);
-    item.rotation.set(pos.rot[0], pos.rot[1], pos.rot[2]);
-    item.castShadow = true;
-    scene.add(item);
-  });
+  return collidableObjects;
 }
 
 /**

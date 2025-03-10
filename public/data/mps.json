@@ -10,12 +10,12 @@
   },
   {
     "id": 2,
-    "name": "Rishi Sunak",
+    "name": "Kemi Badenoch",
     "party": "Conservative",
-    "constituency": "Richmond (Yorks)",
+    "constituency": "North West Essex",
     "position": "Leader of the Opposition",
-    "bio": "Rishi Sunak is the Leader of the Conservative Party and Leader of the Opposition.",
-    "portrait_URL": "https://members-api.parliament.uk/api/members/4483/Portrait?cropType=OneOne"
+    "bio": "Kemi Badenoch is the Leader of the Conservative Party and Leader of the Opposition.",
+    "portrait_URL": "https://members-api.parliament.uk/api/members/4597/Portrait?cropType=OneOne"
   },
   {
     "id": 3,

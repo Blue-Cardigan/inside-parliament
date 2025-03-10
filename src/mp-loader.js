@@ -92,8 +92,11 @@ export function loadMPs() {
   // Get the base URL for the current environment
   const baseUrl = import.meta.env?.BASE_URL || '/';
   
+  // Ensure baseUrl starts with http/https for URL constructor
+  const fullBaseUrl = baseUrl.startsWith('http') ? baseUrl : window.location.origin + baseUrl;
+  
   // Construct the full path to mps.json
-  const dataPath = new URL('data/mps.json', baseUrl).pathname;
+  const dataPath = new URL('/data/mps.json', fullBaseUrl).pathname;
   
   return fetch(dataPath)
     .then(response => {
